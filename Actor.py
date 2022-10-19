@@ -11,7 +11,7 @@ class Actor:
     #returns a dictionary of actors with nmId as key.
     def readFile(filename: str, movies: list):
         actors = {}
-        file = open(filename)
+        file = open(filename, "r", encoding = "utf-8")
 
         for line in file:
             line = line.strip().split("\t")
@@ -28,6 +28,9 @@ class Actor:
         file.close()
 
         return actors
+
+    def getneighbours(self):
+        return self.movies
 
     def __str__(self) -> str:
         string = "\n"

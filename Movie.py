@@ -13,7 +13,7 @@ class Movie:
     #Returns a dictonary of movie objects with ttId as keys.
     def readFile(filename: str):
         movies = {}
-        file = open(filename)
+        file = open(filename, "r", encoding = "utf-8")
 
         for line in file:
             line = line.strip().split("\t")
@@ -30,6 +30,9 @@ class Movie:
             string += "\n\t\t" + actor.name
 
         return string
+
+    def getneighbours(self):
+        return self.actors
 
     #TODO er det kasnkje bedre aa ikke ha en egen edge klasse??
     def getEdges(self):
