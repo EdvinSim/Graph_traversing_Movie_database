@@ -21,7 +21,9 @@ class Actor:
             #Movies from file that is not in the dict movies are ignored
             for ttId in line[2:]:
                 if ttId in movies:
-                    newActor.movies.append(movies[ttId])
+                    movie = movies[ttId]
+                    newActor.movies.append(movie)
+                    movie.actors.append(newActor)
 
         file.close()
 

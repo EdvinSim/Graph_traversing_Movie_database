@@ -12,8 +12,14 @@ def testMarvel():
     marvelMovies = Movie.readFile("marvel_movies.tsv")
     marvelActors = Actor.readFile("marvel_actors.tsv", marvelMovies)
 
-    for key in marvelActors:
-        print(marvelActors[key])
+    # for key in marvelActors:
+    #     print(marvelActors[key])
+    
+    for key in marvelMovies:
+        print(marvelMovies[key], "\n")
+
+        for edge in marvelMovies[key].getEdges():
+            print(edge)
 
 #smallTest()
 testMarvel()
