@@ -1,5 +1,6 @@
 from Actor import Actor
 from Movie import Movie
+from innleveringsoppgave3 import *
 
 def smallTest():
     sw4 = Movie("tt1", "A new Hope", 9.9, 123456)
@@ -21,5 +22,15 @@ def testMarvel():
         for edge in marvelMovies[key].getEdges():
             print(edge)
 
+def testPath():
+    nodes = {}
+    edges = []
+
+    buildGraph(nodes, edges)
+    path = shortestPath(nodes["nm0000354"], nodes["nm0000168"]) #From Matt Damon to Samuel L. Jackson
+    printPath(path)
+    
+
 #smallTest()
-testMarvel()
+# testMarvel()
+testPath()

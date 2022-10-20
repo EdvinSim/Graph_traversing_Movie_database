@@ -31,7 +31,7 @@ class Movie:
 
         return string
 
-    def getneighbours(self):
+    def getNeighbours(self):
         return self.actors
 
     #TODO er det kasnkje bedre aa ikke ha en egen edge klasse??

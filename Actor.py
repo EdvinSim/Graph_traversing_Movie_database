@@ -29,7 +29,7 @@ class Actor:
 
         return actors
 
-    def getneighbours(self):
+    def getNeighbours(self):
         return self.movies
 
     def __str__(self) -> str:
