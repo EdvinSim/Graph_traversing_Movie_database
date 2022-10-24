@@ -29,8 +29,19 @@ class Actor:
 
         return actors
 
+
     def getNeighbours(self):
         return self.movies
+
+    #Returns all MovieEdges from actor.
+    def getEdges(self):
+        edges = []
+        for movie in self.movies:
+            for actor in movie.actors:
+                edges.append(MovieEdge(actor, movie))
+        
+        return edges
+
 
     def __str__(self) -> str:
         string = "\n"
@@ -40,3 +51,10 @@ class Actor:
             string += "\n\t" + movie.title
 
         return string
+
+#An edge representing a movie between two actors.
+class MovieEdge:
+    def __init__(self, actor, movie):
+        self.actor1 = self
+        self.actor2 = actor
+        self.weight = "%0.1f" % (10 - movie.rating)

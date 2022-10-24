@@ -29,8 +29,18 @@ def testPath():
     buildGraph(nodes, edges)
     path = shortestPath(nodes["nm0000354"], nodes["nm0000168"]) #From Matt Damon to Samuel L. Jackson
     printPath(path)
+
+def testChill():
+    nodes = {}
+    edges = []
+
+    buildGraph(nodes, edges)
+
+    shortest = chillestPath(nodes["nm0000354"], nodes["nm0000168"])
+    print(shortest)
     
 
-#smallTest()
+# smallTest()
 # testMarvel()
-testPath()
+# testPath()
+testChill()

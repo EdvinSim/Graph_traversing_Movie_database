@@ -23,11 +23,11 @@ def graphSize(nodes: dict, edges: list):
 
 #Oppgave 2
 #Bredde-foerst soek
-#TODO ikke ferdig. Burde ta inn ID ikke objekt.
-#TODO Lage egen printPath metode?
 def shortestPath(startActor, goalActor):
 
     queue = [startActor]
+
+    #A dict where the key is a visited node and value is previous node in path.
     visited = {}
 
     while len(queue) > 0:
@@ -55,14 +55,37 @@ def shortestPath(startActor, goalActor):
 
 
 def printPath(path: list):
-    
+
     print("\n" + path[0].name)
 
     for i in range(1, len(path), 2):
         print(f"===[ {path[i].title} {path[i].rating} ] ===> {path[i+1].name}")
 
 
+#Oppgave 3
+#Gives the path with the best movie rating from a startActor to a goalActor
+def chillestPath(startActor, goalActor):
+    visited = []
+    dist = {}#TODO default uendelig
+    priQueue = []
+    dist[startActor] = 0
 
+    while len(priQueue) > 0:
+        #Pointer = u fra foiler TODO fjern.
+        pointer = priQueue.pop(0)
+        if pointer not in visited:
+            visited.append[pointer]
+
+            for edge in pointer.getEdges():
+                tmp = dist.setdefault(pointer , float["inf"]) #If key not in dist set value as infinite.
+                distanceToEdge = tmp + edge.weight
+
+                if distanceToEdge < dist.setdefault(edge.actor2, float("inf")):
+                    dist[edge.actor2] = distanceToEdge
+                    priQueue.append(distanceToEdge, edge.actor2)
+
+    return dist
+                    
 
 
 def main():
@@ -81,5 +104,7 @@ def main():
     printPath(shortestPath(nodes["nm4689420"], nodes["nm0000365"]))
     printPath(shortestPath(nodes["nm0000288"], nodes["nm0001401"]))
     printPath(shortestPath(nodes["nm0031483"], nodes["nm0931324"]))
+
+
 
 main()
