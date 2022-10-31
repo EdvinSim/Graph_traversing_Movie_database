@@ -1,5 +1,8 @@
+
+
 #IN2010, innelvering 3
 
+from queue import PriorityQueue
 from Movie import Movie
 from Actor import Actor
 
@@ -61,30 +64,60 @@ def printPath(path: list):
     for i in range(1, len(path), 2):
         print(f"===[ {path[i].title} {path[i].rating} ] ===> {path[i+1].name}")
 
+#Edge
+def edgeWeight(node1, node2):
+    if isinstance(node1, Movie):
+        movie = node1
+    else:
+        movie = node2
+    return float("%0.1f" % (10 - movie.rating))
 
 #Oppgave 3
+#Dijkstra
 #Gives the path with the best movie rating from a startActor to a goalActor
-def chillestPath(startActor, goalActor):
+#TODO legge til total vekt i print ogsaa;
+def chillestPath(nodes, startActor, goalActor):
     visited = []
-    dist = {}#TODO default uendelig
-    priQueue = []
+    dist = {} #Length from node(key) to startActor.
+    paths = {startActor: None} #Previous node with shortest path to startActor.
+    queue = PriorityQueue()
+    queue.put((0, startActor)) #Priority queue
+
+    infinite = float("inf") #Equivilant to infinite
+
+    #Make default distance from node to start infinite for all nodes.
+    for key in nodes:
+        dist[nodes[key]] = infinite
     dist[startActor] = 0
 
-    while len(priQueue) > 0:
-        #Pointer = u fra foiler TODO fjern.
-        pointer = priQueue.pop(0)
-        if pointer not in visited:
-            visited.append[pointer]
+    #Find distances from nodes to start
+    while not queue.empty() > 0 and len(visited) < len(nodes):
 
-            for edge in pointer.getEdges():
-                tmp = dist.setdefault(pointer , float["inf"]) #If key not in dist set value as infinite.
-                distanceToEdge = tmp + edge.weight
+        u = queue.get()[1]
 
-                if distanceToEdge < dist.setdefault(edge.actor2, float("inf")):
-                    dist[edge.actor2] = distanceToEdge
-                    priQueue.append(distanceToEdge, edge.actor2)
+        if u not in visited:
+            visited.append(u)
 
-    return dist
+            for v in u.getNeighbours():
+                c = dist[u] + edgeWeight(u, v)
+                if c < dist[v]:
+                    dist[v] = c
+                    queue.put((c, v)) #Legg til v med prioritet c.
+
+                    #Update best path to current node
+                    paths[v] = u
+        
+        if u == goalActor:
+            break
+    
+    #Make path from start to goal.
+    finalPath = []
+    tmp = goalActor
+    while tmp != None:
+        finalPath.insert(0, tmp)
+        tmp = paths[tmp]
+
+    return finalPath
                     
 
 
@@ -105,6 +138,13 @@ def main():
     printPath(shortestPath(nodes["nm0000288"], nodes["nm0001401"]))
     printPath(shortestPath(nodes["nm0031483"], nodes["nm0931324"]))
 
-
+    print("\nOppgave 3")
+    # printPath(chillestPath(nodes, nodes["nm2255973"], nodes["nm0000460"]))
+    printPath(chillestPath(nodes, nodes["nm2255973"], nodes["nm0000460"]))
+    printPath(chillestPath(nodes, nodes["nm2255973"], nodes["nm0000460"]))
+    printPath(chillestPath(nodes, nodes["nm0424060"], nodes["nm0000243"]))
+    printPath(chillestPath(nodes, nodes["nm4689420"], nodes["nm0000365"]))
+    printPath(chillestPath(nodes, nodes["nm0000288"], nodes["nm0001401"]))
+    printPath(chillestPath(nodes, nodes["nm0031483"], nodes["nm0931324"]))
 
 main()

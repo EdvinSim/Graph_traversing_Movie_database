@@ -1,3 +1,5 @@
+import Movie
+
 class Actor:
 
     #A node class for a graph of movies and actors.
@@ -33,8 +35,8 @@ class Actor:
     def getNeighbours(self):
         return self.movies
 
-    #Returns all MovieEdges from actor.
-    def getEdges(self):
+    #Returns all MovieEdges from actor. TODO fjern hvis ikke blir brukt.
+    def getMovieEdges(self):
         edges = []
         for movie in self.movies:
             for actor in movie.actors:
@@ -52,7 +54,19 @@ class Actor:
 
         return string
 
-#An edge representing a movie between two actors.
+    def __gt__(self, other):
+        if isinstance(other, Movie.Movie):
+            return self.name > other.title
+        else:
+            return self.name > other.name
+
+    def __lt__(self, other):
+        if isinstance(other, Movie.Movie):
+            return self.name < other.title
+        else:
+            return self.name < other.name
+
+#An edge representing a movie between two actors. #TODO fjern hvis denne klasssen ikke ble brukt.
 class MovieEdge:
     def __init__(self, actor, movie):
         self.actor1 = self

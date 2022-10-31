@@ -1,3 +1,5 @@
+import Actor
+
 class Movie:
 
     #A edge class for a graph of movies and actors.
@@ -31,6 +33,7 @@ class Movie:
 
         return string
 
+
     def getNeighbours(self):
         return self.actors
 
@@ -43,16 +46,28 @@ class Movie:
 
         return edges
 
+    def __gt__(self, other):
+        if isinstance(other, Actor.Actor):
+            return self.title > other.name
+        else:
+            return self.title > other.title
+    
+    def __lt__(self, other):
+        if isinstance(other, Actor.Actor):
+            return self.title < other.name
+        else:
+            return self.title < other.title
 
 
 
 
-#Inner class for a graph edge between a movie and a actor.
+
+#Inner class for a graph edge between a movie and a actor. TODO fjern hvis ikke brukt.
 class Edge:
     def __init__(self, actor, movie):
         self.actor = actor
         self.movie = movie
-        self.weight = "%0.1f" % (10 - movie.rating) #Slik eller blir det ikke helt riktig output.
+        self.weight = "%0.1f" % (10 - movie.rating) #Slik ellers blir det ikke helt riktig output.
 
     def __str__(self):
         return f"{self.movie.title} <---- {self.weight} ----> {self.actor.name}"

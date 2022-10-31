@@ -37,8 +37,9 @@ def testChill():
     buildGraph(nodes, edges)
 
     shortest = chillestPath(nodes["nm0000354"], nodes["nm0000168"])
-    print(shortest)
-    
+    printPath(shortest)
+
+print("\nTest:")
 
 # smallTest()
 # testMarvel()
