@@ -1,6 +1,6 @@
 from Actor import Actor
 from Movie import Movie
-from innleveringsoppgave3 import *
+from HollywoodGraph import HollywoodGraph
 
 def smallTest():
     sw4 = Movie("tt1", "A new Hope", 9.9, 123456)
@@ -22,6 +22,7 @@ def testMarvel():
         for edge in marvelMovies[key].getEdges():
             print(edge)
 
+#Outdated
 def testPath():
     nodes = {}
     edges = []
@@ -30,6 +31,7 @@ def testPath():
     path = shortestPath(nodes["nm0000354"], nodes["nm0000168"]) #From Matt Damon to Samuel L. Jackson
     printPath(path)
 
+#Outdated
 def testChill():
     nodes = {}
     edges = []
@@ -39,9 +41,14 @@ def testChill():
     shortest = chillestPath(nodes["nm0000354"], nodes["nm0000168"])
     printPath(shortest)
 
-print("\nTest:")
 
+def testComponents(graph: HollywoodGraph):
+    graph.analyzeComponents()
+
+print("\nTest:")
+graph = HollywoodGraph("marvel_movies.tsv", "marvel_actors.tsv")
 # smallTest()
 # testMarvel()
 # testPath()
-testChill()
+# testChill()
+testComponents(graph)

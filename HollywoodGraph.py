@@ -1,6 +1,7 @@
 from queue import PriorityQueue
 from Movie import Movie
 from Actor import Actor
+import sys
 
 class HollywoodGraph:
 
@@ -80,7 +81,6 @@ class HollywoodGraph:
         else:
             movie = node2
         return 10 - movie.rating
-        return float("%0.1f" % (10 - movie.rating))
 
     #Oppgave 3
     #Uses Dijekstra to give the path with the best movie rating from a startActor to a goalActor
@@ -132,3 +132,53 @@ class HollywoodGraph:
             tmp = paths[tmp]
 
         return finalPath
+
+
+    #Oppgave 4
+    #DFS full
+    def analyzeComponents(self):
+
+        componentSizes = {}
+        visited = []
+
+        for node in list(self.nodes.values()):
+            if node not in visited:
+                print("New component") #TODO fjern
+                before = len(visited)
+                self.DFS_Iterative(node, visited)
+                after = len(visited)
+                compSize = after - before
+
+                if compSize in componentSizes:
+                    componentSizes[compSize] += 1
+                else:
+                    componentSizes[compSize] = 1
+
+        for key in componentSizes:
+            print(f"There are {componentSizes[key]} components of size {key}")
+
+
+    #Uses DFS to define a component. visited = component.
+    def DFS_Recursive(self, node, visited: list):
+        visited.append(node)
+
+        for neighbour in node.getNeighbours():
+            if neighbour not in visited:
+                self.DFS_Recursive(neighbour, visited)
+
+
+
+
+    #Uses DFS to return a component
+    def DFS_Iterative(self, startNode, visited: list):
+        print("Iterative")#TODO fjern
+        stack = [startNode]
+
+        while len(stack) > 0:
+            node = stack.pop(0)
+
+            if node not in visited:
+                visited.append(node)
+
+                for neighbour in node.getNeighbours():
+                    stack.insert(0, neighbour)
