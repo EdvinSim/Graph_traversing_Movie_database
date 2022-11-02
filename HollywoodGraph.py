@@ -35,7 +35,7 @@ class HollywoodGraph:
 
 
     #Oppgave 2
-    #Breadth first search.
+    #Breadth First Search.
     #Finds the shortest path from one actor to another in a unweighted graph.
     def shortestPath(self, startId, goalId):
         startActor = self.nodes[startId]
@@ -48,7 +48,7 @@ class HollywoodGraph:
 
         while len(queue) > 0:
 
-            pointer = queue[0]
+            pointer = queue.pop(0)
 
             for node in pointer.getNeighbours():
                 if node not in visited:
@@ -68,7 +68,6 @@ class HollywoodGraph:
                     else:
                         queue.append(node)
 
-            queue.pop(0)
 
     #Prints a path.
     def printPath(self, path: list):
@@ -120,22 +119,22 @@ class HollywoodGraph:
         #Find distances from nodes to start
         while not queue.empty() > 0 and len(visited) < len(self.nodes):
 
-            u = queue.get()[1]
+            node = queue.get()[1]
 
-            if u not in visited:
-                visited.add(u)
+            if node not in visited:
+                visited.add(node)
 
-                for v in u.getNeighbours():
-                    c = dist[u] + self.edgeWeight(u, v)
-                    if c < dist[v]:
-                        dist[v] = c
-                        queue.put((c, v)) #Legg til v med prioritet c.
+                for neighbour in node.getNeighbours():
+                    currentDist = dist[node] + self.edgeWeight(node, neighbour)
+                    if currentDist < dist[neighbour]:
+                        dist[neighbour] = currentDist
+                        queue.put((currentDist, neighbour)) #Add neighbour with priority currentDist.
 
                         #Update best path to current node
-                        paths[v] = u
+                        paths[neighbour] = node
             
             #We could not break here and go trough the whole graph, but its takes a while...
-            if u == goalActor:
+            if node == goalActor:
                 break
         
         #Make path from start to goal.
@@ -200,7 +199,12 @@ class HollywoodGraph:
                         unvisitedActors.remove(neighbour)
 
 
-    #Not working. DFS on imdb graph will reach max recursion quicky.
+
+
+
+
+
+    #TODO Not working. DFS on imdb graph will reach max recursion quicky.
     def DFS_Recursive(self, node, visited: set, unvisitedActors: set):
         visited.add(node)
 
@@ -211,7 +215,7 @@ class HollywoodGraph:
                 self.DFS_Recursive(neighbour, visited, unvisitedActors)
 
 
-    #Not working. Takes too long on imdb graph.
+    #TODO Not working. Takes too long on imdb graph.
     def DFS_Iterative(self, startNode: Actor, unvisitedActors: set):
         visited = set()
         stack = [startNode]
