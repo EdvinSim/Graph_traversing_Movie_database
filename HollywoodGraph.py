@@ -22,6 +22,7 @@ class HollywoodGraph:
         self.nodes.update(self.actors)
 
 
+
     #Oppgave 1.2
     def printGraphSize(self):
         edges = 0
@@ -153,20 +154,21 @@ class HollywoodGraph:
     def analyzeComponents(self):
 
         componentSizes = {}
-        visitedAll = set()
-        visitedActors = set()
+        unvisitedActors = set(self.actors.values())
 
-        for actor in list(self.actors.values()):
-            if actor not in visitedAll:
-                before = len(visitedActors)
-                self.BFS(actor, visitedAll, visitedActors)
-                after = len(visitedActors)
-                compSize = after - before
+        while len(unvisitedActors) > 0:
+            before = len(unvisitedActors)
 
-                if compSize in componentSizes:
-                    componentSizes[compSize] += 1
-                else:
-                    componentSizes[compSize] = 1
+            actor = unvisitedActors.pop()
+            self.BFS(actor, unvisitedActors)
+
+            after = len(unvisitedActors)
+            compSize = before - after
+
+            if compSize in componentSizes:
+                componentSizes[compSize] += 1
+            else:
+                componentSizes[compSize] = 1
 
         #Print component sizes descending on key.
         sortedKeys = list(componentSizes.keys())
@@ -176,50 +178,54 @@ class HollywoodGraph:
             print(f"There are {componentSizes[key]} \tcomponents of size {key}")
 
 
-    #Not working. TODO fjern?
-    def DFS_Recursive(self, node, visited: set):
+    #Breadt First Search to find all nodes in a component.
+    def BFS(self, startNode, unvisitedActors: set):
+        visited = set()
+        visited.add(startNode)
+
+        #Set unstead of queue to run faster. In theory this means this method is not BFS.
+        queue = set()
+        queue.add(startNode)
+
+        #Visit all nodes in component.
+        while len(queue) > 0:
+            node = queue.pop()
+
+            for neighbour in node.getNeighbours():
+                if neighbour not in visited:
+                    queue.add(neighbour)
+                    visited.add(neighbour)
+
+                    if isinstance(neighbour, Actor):
+                        unvisitedActors.remove(neighbour)
+
+
+    #Not working. DFS on imdb graph will reach max recursion quicky.
+    def DFS_Recursive(self, node, visited: set, unvisitedActors: set):
         visited.add(node)
 
         for neighbour in node.getNeighbours():
             if neighbour not in visited:
-                self.DFS_Recursive(neighbour, visited)
+                if isinstance(neighbour, Actor):
+                    unvisitedActors.remove(neighbour)
+                self.DFS_Recursive(neighbour, visited, unvisitedActors)
 
 
-    #Not working. TODO fjern?
-    def DFS_Iterative(self, startNode: Actor, visited: set):
+    #Not working. Takes too long on imdb graph.
+    def DFS_Iterative(self, startNode: Actor, unvisitedActors: set):
+        visited = set()
         stack = [startNode]
 
         while len(stack) > 0:
             node = stack.pop(0)
 
-            #TODO fjern
-            length = len(visited)
-            if length % 1000 == 0:
-                print(length)
-
             if node not in visited:
                 visited.add(node)
+
+                if isinstance(node, Actor):
+                    unvisitedActors.remove(node)
 
                 for neighbour in node.getNeighbours():
                     stack.insert(0, neighbour)
 
 
-    #Breadt First Search to find all nodes in a component.
-    def BFS(self, startNode, visitedAll: set, visitedActors: set):
-        queue = [startNode]
-
-        #Add startNode so that there will be no components of size zero.
-        if isinstance(startNode, Actor):
-            visitedActors.add(startNode)
-
-        #Visit all nodes in component.
-        while len(queue) > 0:
-            node = queue.pop(0)
-
-            for neighbour in node.getNeighbours():
-                if neighbour not in visitedAll:
-                    queue.append(neighbour)
-                    visitedAll.add(neighbour)
-
-                    if isinstance(neighbour, Actor):
-                        visitedActors.add(neighbour)
