@@ -1,8 +1,11 @@
+from tracemalloc import start
 from HollywoodGraph import HollywoodGraph
+import time
 
 #IN2010, innelvering 3
 
 def main():
+    startTime = time.time()
 
     imdb = HollywoodGraph("movies.tsv", "actors.tsv")
 
@@ -24,7 +27,9 @@ def main():
         imdb.printPath(path)
         imdb.printTotalWeight(path)
 
-    print("\nOppgave 4\n")
+    print("\nOppgave 4\nPlease wait...\n")
     imdb.analyzeComponents()
+
+    print("\nTime used for all tasks:", time.time() - startTime, "sec.")
 
 main()

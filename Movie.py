@@ -1,9 +1,9 @@
 import Actor
 
-class Movie:
+#A class for a graph of movies and actors.
+#For simplicity there are only a few get methods and all class variables are public.
 
-    #A edge class for a graph of movies and actors.
-    #For simplicity there are no get methods and all class variables are public.
+class Movie:
 
     def __init__(self, ttId: str, title: str, rating: float, votes: int):
         self.id = ttId
@@ -65,7 +65,8 @@ class Movie:
 
 
 
-#Inner class for a graph edge between a movie and a actor. TODO fjern hvis ikke brukt.
+#Inner class for a graph edge between a movie and a actor.
+#TODO fjern hvis ikke brukt.
 class Edge:
     def __init__(self, actor, movie):
         self.actor = actor

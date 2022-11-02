@@ -2,6 +2,14 @@ from queue import PriorityQueue
 from Movie import Movie
 from Actor import Actor
 
+"""
+A graph where nodes are Actors and edges are betweeen two actors staring
+in the same movie. The edge weight is 10 minus the films rating. Both
+Actors and Movies are classes and both are used as nodes while traversing 
+the graph beacause this makes it easyer. But when counting number of nodes
+it only count Actors.
+"""
+
 class HollywoodGraph:
 
     #Oppgave 1.1
@@ -18,14 +26,16 @@ class HollywoodGraph:
     def printGraphSize(self):
         edges = 0
 
-        for key in self.movies:
-            edges += len(self.movies[key].actors)
+        for film in list(self.movies.values()):
+            numActors = len(film.actors)
+            edges += (numActors*(numActors - 1))/2
 
-        print(f"\nNodes: {len(self.nodes)}\nEdges: {edges}")
+        print(f"\nNodes: {len(self.actors)}\nEdges: {edges}")
 
 
     #Oppgave 2
-    #Bredde-foerst soek
+    #Breadth first search.
+    #Finds the shortest path from one actor to another in a unweighted graph.
     def shortestPath(self, startId, goalId):
         startActor = self.nodes[startId]
         goalActor = self.nodes[goalId]
@@ -42,7 +52,8 @@ class HollywoodGraph:
             for node in pointer.getNeighbours():
                 if node not in visited:
                     visited[node] = pointer
-
+                    
+                    #Create path.
                     if node == goalActor:
                         shortestPath = [node]
                         tmp = node
@@ -58,7 +69,7 @@ class HollywoodGraph:
 
             queue.pop(0)
 
-
+    #Prints a path.
     def printPath(self, path: list):
 
         print("\n" + path[0].name)
@@ -66,6 +77,8 @@ class HollywoodGraph:
         for i in range(1, len(path), 2):
             print(f"===[ {path[i].title} ({path[i].rating}) ] ===> {path[i+1].name}")
 
+
+    #Prints total weight of a path.
     def printTotalWeight(self, path: list):
         total = 0
         for i in range(1, len(path), 2):
@@ -81,6 +94,7 @@ class HollywoodGraph:
             movie = node2
         return 10 - movie.rating
 
+
     #Oppgave 3
     #Uses Dijekstra to give the path with the best movie rating from a startActor to a goalActor
     def chillestPath(self, startId, goalId):
@@ -88,7 +102,7 @@ class HollywoodGraph:
         startActor = self.nodes[startId]
         goalActor = self.nodes[goalId]
 
-        visited = []
+        visited = set()
         dist = {} #Length from node(key) to startActor.
         paths = {startActor: None} #Previous node with shortest path to startActor.
         queue = PriorityQueue()
@@ -108,7 +122,7 @@ class HollywoodGraph:
             u = queue.get()[1]
 
             if u not in visited:
-                visited.append(u)
+                visited.add(u)
 
                 for v in u.getNeighbours():
                     c = dist[u] + self.edgeWeight(u, v)
@@ -134,29 +148,35 @@ class HollywoodGraph:
 
 
     #Oppgave 4
-    #Goes trought tha graph, finds all komponents and writes out the size.
+    #Goes trought tha graph, finds all components and writes out the size.
+    #Only Actors are counted as nodes. Therefore there are two different sets of visited.
     def analyzeComponents(self):
 
         componentSizes = {}
-        visited = set()
+        visitedAll = set()
+        visitedActors = set()
 
         for actor in list(self.actors.values()):
-            if actor not in visited:
-                before = len(visited)
-                self.BFS(actor, visited)
-                after = len(visited)
+            if actor not in visitedAll:
+                before = len(visitedActors)
+                self.BFS(actor, visitedAll, visitedActors)
+                after = len(visitedActors)
                 compSize = after - before
 
                 if compSize in componentSizes:
                     componentSizes[compSize] += 1
                 else:
                     componentSizes[compSize] = 1
-        
-        for key in componentSizes:
+
+        #Print component sizes descending on key.
+        sortedKeys = list(componentSizes.keys())
+        sortedKeys.sort(reverse=True)
+
+        for key in sortedKeys:
             print(f"There are {componentSizes[key]} \tcomponents of size {key}")
 
 
-    #Funket ikke i bruk med analyzeComponents. TODO fjern?
+    #Not working. TODO fjern?
     def DFS_Recursive(self, node, visited: set):
         visited.add(node)
 
@@ -165,12 +185,17 @@ class HollywoodGraph:
                 self.DFS_Recursive(neighbour, visited)
 
 
-    #Funket ikke i bruk med analyzeComponents. TODO fjern?
-    def DFS_Iterative(self, startNode, visited: set):
+    #Not working. TODO fjern?
+    def DFS_Iterative(self, startNode: Actor, visited: set):
         stack = [startNode]
 
         while len(stack) > 0:
             node = stack.pop(0)
+
+            #TODO fjern
+            length = len(visited)
+            if length % 1000 == 0:
+                print(length)
 
             if node not in visited:
                 visited.add(node)
@@ -179,13 +204,22 @@ class HollywoodGraph:
                     stack.insert(0, neighbour)
 
 
-    def BFS(self, startNode, visited: set):
+    #Breadt First Search to find all nodes in a component.
+    def BFS(self, startNode, visitedAll: set, visitedActors: set):
         queue = [startNode]
 
+        #Add startNode so that there will be no components of size zero.
+        if isinstance(startNode, Actor):
+            visitedActors.add(startNode)
+
+        #Visit all nodes in component.
         while len(queue) > 0:
             node = queue.pop(0)
 
             for neighbour in node.getNeighbours():
-                if neighbour not in visited:
-                    visited.add(neighbour)
+                if neighbour not in visitedAll:
                     queue.append(neighbour)
+                    visitedAll.add(neighbour)
+
+                    if isinstance(neighbour, Actor):
+                        visitedActors.add(neighbour)

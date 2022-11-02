@@ -1,9 +1,9 @@
 import Movie
 
-class Actor:
+#A node class for a HollywoodGraph of movies and actors.
+#For simplicity there are only a few get methods and all class variables are public.
 
-    #A node class for a graph of movies and actors.
-    #For simplicity there are no get methods and all class variables are public.
+class Actor:
 
     def __init__ (self, nmId: str, name: str):
         self.id = nmId
@@ -66,7 +66,8 @@ class Actor:
         else:
             return self.name < other.name
 
-#An edge representing a movie between two actors. #TODO fjern hvis denne klasssen ikke ble brukt.
+#An edge representing a movie between two actors.
+#TODO fjern hvis denne klasssen ikke ble brukt.
 class MovieEdge:
     def __init__(self, actor, movie):
         self.actor1 = self

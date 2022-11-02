@@ -23,32 +23,27 @@ def testMarvel():
             print(edge)
 
 #Outdated
-def testPath():
-    nodes = {}
-    edges = []
+def testPath(graph):
 
-    buildGraph(nodes, edges)
-    path = shortestPath(nodes["nm0000354"], nodes["nm0000168"]) #From Matt Damon to Samuel L. Jackson
-    printPath(path)
+    print("\nTesting shortest path: ")
+    path = graph.shortestPath("nm0000354", "nm0000168") #From Matt Damon to Samuel L. Jackson
+    graph.printPath(path)
 
 #Outdated
-def testChill():
-    nodes = {}
-    edges = []
-
-    buildGraph(nodes, edges)
-
-    shortest = chillestPath(nodes["nm0000354"], nodes["nm0000168"])
-    printPath(shortest)
+def testChill(graph: HollywoodGraph):
+    print("\nTesting chillest path:")
+    shortest = graph.chillestPath("nm0000354", "nm0000168")
+    graph.printPath(shortest)
 
 
 def testComponents(graph: HollywoodGraph):
+    print("\nTesting analyseComponents():\n")
     graph.analyzeComponents()
 
 print("\nTest:")
 graph = HollywoodGraph("marvel_movies.tsv", "marvel_actors.tsv")
 # smallTest()
 # testMarvel()
-# testPath()
-# testChill()
+testPath(graph)
+testChill(graph)
 testComponents(graph)
