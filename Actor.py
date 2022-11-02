@@ -6,7 +6,7 @@ class Actor:
     #For simplicity there are no get methods and all class variables are public.
 
     def __init__ (self, nmId: str, name: str):
-        self.nmId = nmId
+        self.id = nmId
         self.name = name
         self.movies = []
 

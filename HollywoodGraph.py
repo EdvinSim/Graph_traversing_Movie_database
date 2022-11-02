@@ -1,7 +1,6 @@
 from queue import PriorityQueue
 from Movie import Movie
 from Actor import Actor
-import sys
 
 class HollywoodGraph:
 
@@ -135,17 +134,16 @@ class HollywoodGraph:
 
 
     #Oppgave 4
-    #DFS full
+    #Goes trought tha graph, finds all komponents and writes out the size.
     def analyzeComponents(self):
 
         componentSizes = {}
-        visited = []
+        visited = set()
 
-        for node in list(self.nodes.values()):
-            if node not in visited:
-                print("New component") #TODO fjern
+        for actor in list(self.actors.values()):
+            if actor not in visited:
                 before = len(visited)
-                self.DFS_Iterative(node, visited)
+                self.BFS(actor, visited)
                 after = len(visited)
                 compSize = after - before
 
@@ -153,32 +151,41 @@ class HollywoodGraph:
                     componentSizes[compSize] += 1
                 else:
                     componentSizes[compSize] = 1
-
+        
         for key in componentSizes:
-            print(f"There are {componentSizes[key]} components of size {key}")
+            print(f"There are {componentSizes[key]} \tcomponents of size {key}")
 
 
-    #Uses DFS to define a component. visited = component.
-    def DFS_Recursive(self, node, visited: list):
-        visited.append(node)
+    #Funket ikke i bruk med analyzeComponents. TODO fjern?
+    def DFS_Recursive(self, node, visited: set):
+        visited.add(node)
 
         for neighbour in node.getNeighbours():
             if neighbour not in visited:
                 self.DFS_Recursive(neighbour, visited)
 
 
-
-
-    #Uses DFS to return a component
-    def DFS_Iterative(self, startNode, visited: list):
-        print("Iterative")#TODO fjern
+    #Funket ikke i bruk med analyzeComponents. TODO fjern?
+    def DFS_Iterative(self, startNode, visited: set):
         stack = [startNode]
 
         while len(stack) > 0:
             node = stack.pop(0)
 
             if node not in visited:
-                visited.append(node)
+                visited.add(node)
 
                 for neighbour in node.getNeighbours():
                     stack.insert(0, neighbour)
+
+
+    def BFS(self, startNode, visited: set):
+        queue = [startNode]
+
+        while len(queue) > 0:
+            node = queue.pop(0)
+
+            for neighbour in node.getNeighbours():
+                if neighbour not in visited:
+                    visited.add(neighbour)
+                    queue.append(neighbour)

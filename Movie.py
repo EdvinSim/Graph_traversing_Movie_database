@@ -6,7 +6,7 @@ class Movie:
     #For simplicity there are no get methods and all class variables are public.
 
     def __init__(self, ttId: str, title: str, rating: float, votes: int):
-        self.ttId = ttId
+        self.id = ttId
         self.title = title
         self.rating = float(rating)
         self.votes = int(votes)
@@ -36,6 +36,9 @@ class Movie:
 
     def getNeighbours(self):
         return self.actors
+
+    def getName(self):
+        return self.title
 
     #TODO er det kasnkje bedre aa ikke ha en egen edge klasse??
     def getEdges(self):
