@@ -5,6 +5,7 @@ import time
 #IN2010, innelvering 3
 
 def main():
+
     startTime = time.time()
 
     imdb = HollywoodGraph("movies.tsv", "actors.tsv")
@@ -22,8 +23,8 @@ def main():
     print("\nOppgave 3")
     for pair in actorPairs:
         path = imdb.chillestPath(pair[0], pair[1])
-        imdb.printPath(path)
-        imdb.printTotalWeight(path)
+        imdb.printPath(path[0])
+        print("Total weight:", path[1] )
 
     print("\nOppgave 4\n")
     imdb.analyzeComponents()

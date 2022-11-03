@@ -6,7 +6,7 @@ import Movie
 class Actor:
 
     def __init__ (self, nmId: str, name: str):
-        self.id = nmId
+        self.nmId = nmId
         self.name = name
         self.movies = []
 
@@ -35,15 +35,6 @@ class Actor:
     def getNeighbours(self):
         return self.movies
 
-    #Returns all MovieEdges from actor. TODO fjern hvis ikke blir brukt.
-    def getMovieEdges(self):
-        edges = []
-        for movie in self.movies:
-            for actor in movie.actors:
-                edges.append(MovieEdge(actor, movie))
-        
-        return edges
-
 
     def __str__(self) -> str:
         string = "\n"
@@ -65,11 +56,3 @@ class Actor:
             return self.name < other.title
         else:
             return self.name < other.name
-
-#An edge representing a movie between two actors.
-#TODO fjern hvis denne klasssen ikke ble brukt.
-class MovieEdge:
-    def __init__(self, actor, movie):
-        self.actor1 = self
-        self.actor2 = actor
-        self.weight = "%0.1f" % (10 - movie.rating)

@@ -4,10 +4,10 @@ from Actor import Actor
 
 """
 A graph where nodes are Actors and edges are betweeen two actors staring
-in the same movie. The edge weight is 10 minus the films rating. Both
+in the same movie. An edge weight is 10 minus the film's rating. Both
 Actors and Movies are classes and both are used as nodes while traversing 
 the graph beacause this makes it easyer. But when counting number of nodes
-it only count Actors.
+it only counts Actors.
 """
 
 class HollywoodGraph:
@@ -45,7 +45,8 @@ class HollywoodGraph:
 
         #A dict where the key is a visited node and value is previous node in path.
         visited = {}
-
+        
+        #Start search.
         while len(queue) > 0:
 
             pointer = queue.pop(0)
@@ -78,7 +79,7 @@ class HollywoodGraph:
             print(f"===[ {path[i].title} ({path[i].rating}) ] ===> {path[i+1].name}")
 
 
-    #Prints total weight of a path.
+    #Prints total weight of a path. Not in use anymore.
     def printTotalWeight(self, path: list):
         total = 0
         for i in range(1, len(path), 2):
@@ -96,7 +97,7 @@ class HollywoodGraph:
 
 
     #Oppgave 3
-    #Uses Dijekstra to give the path with the best movie rating from a startActor to a goalActor
+    #Uses Dijekstra to give the path with the best movie rating from startActor to a goalActor
     def chillestPath(self, startId, goalId):
 
         startActor = self.nodes[startId]
@@ -117,7 +118,7 @@ class HollywoodGraph:
         dist[startActor] = 0
 
         #Find distances from nodes to start
-        while not queue.empty() > 0 and len(visited) < len(self.nodes):
+        while not queue.empty() > 0:
 
             node = queue.get()[1]
 
@@ -144,22 +145,22 @@ class HollywoodGraph:
             finalPath.insert(0, tmp)
             tmp = paths[tmp]
 
-        return finalPath
+        return (finalPath, dist[goalActor])
 
 
     #Oppgave 4
-    #Goes trought tha graph, finds all components and writes out the size.
-    #Only Actors are counted as nodes. Therefore there are two different sets of visited.
+    #Goes trought the graph, finds all components and writes out the size.
+    #Only Actors are counted as nodes.
     def analyzeComponents(self):
 
-        componentSizes = {}
-        unvisitedActors = set(self.actors.values())
+        componentSizes = {} #For storing component sizes
+        unvisitedActors = set(self.actors.values()) #Used for counting each component size.
 
         while len(unvisitedActors) > 0:
             before = len(unvisitedActors)
 
             actor = unvisitedActors.pop()
-            self.BFS(actor, unvisitedActors)
+            self.findComponent(actor, unvisitedActors)
 
             after = len(unvisitedActors)
             compSize = before - after
@@ -177,13 +178,12 @@ class HollywoodGraph:
             print(f"There are {componentSizes[key]} \tcomponents of size {key}")
 
 
-    #Breadt First Search to find all nodes in a component.
-    def BFS(self, startNode, unvisitedActors: set):
+    #Visits all nodes from a start node in a component.
+    def findComponent(self, startNode, unvisitedActors: set):
         visited = set()
         visited.add(startNode)
 
-        #Set unstead of queue to run faster. In theory this means this method is not BFS.
-        queue = set()
+        queue = set() #This is not a true queue.
         queue.add(startNode)
 
         #Visit all nodes in component.
@@ -204,7 +204,7 @@ class HollywoodGraph:
 
 
 
-    #TODO Not working. DFS on imdb graph will reach max recursion quicky.
+    #Only wokrs on test.py. DFS on imdb graph will reach max recursion quicky.
     def DFS_Recursive(self, node, visited: set, unvisitedActors: set):
         visited.add(node)
 
@@ -215,7 +215,7 @@ class HollywoodGraph:
                 self.DFS_Recursive(neighbour, visited, unvisitedActors)
 
 
-    #TODO Not working. Takes too long on imdb graph.
+    #Only wokrs on test.py. Takes too long on imdb graph.
     def DFS_Iterative(self, startNode: Actor, unvisitedActors: set):
         visited = set()
         stack = [startNode]
@@ -226,7 +226,7 @@ class HollywoodGraph:
             if node not in visited:
                 visited.add(node)
 
-                if isinstance(node, Actor):
+                if isinstance(node, Actor) and node != startNode:
                     unvisitedActors.remove(node)
 
                 for neighbour in node.getNeighbours():

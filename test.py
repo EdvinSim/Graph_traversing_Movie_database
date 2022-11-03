@@ -33,7 +33,7 @@ def testPath(graph):
 def testChill(graph: HollywoodGraph):
     print("\nTesting chillest path:")
     shortest = graph.chillestPath("nm0000354", "nm0000168")
-    graph.printPath(shortest)
+    graph.printPath(shortest[0])
 
 
 def testComponents(graph: HollywoodGraph):
@@ -44,6 +44,6 @@ print("\nTest:")
 graph = HollywoodGraph("marvel_movies.tsv", "marvel_actors.tsv")
 # smallTest()
 # testMarvel()
-testPath(graph)
+# testPath(graph)
 testChill(graph)
 testComponents(graph)
