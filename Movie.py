@@ -10,7 +10,7 @@ class Movie:
         self.title = title
         self.rating = float(rating)
         self.votes = int(votes)
-        self.actors = []
+        self.actors = set()
 
     #Returns a dictionary of movie objects with ttId as keys.
     def readFile(filename: str):
@@ -25,6 +25,11 @@ class Movie:
 
         return movies
 
+
+    def getNeighbours(self):
+        return self.actors
+
+
     def __str__(self) -> str:
         string =  f"\n{self.title}:\n\tID: {self.ttId}\n\tRating: {self.rating}\n\tVotes: {self.votes}\n\tActors:"
         
@@ -32,10 +37,6 @@ class Movie:
             string += "\n\t\t" + actor.name
 
         return string
-
-
-    def getNeighbours(self):
-        return self.actors
 
 
     def __gt__(self, other):

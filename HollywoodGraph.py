@@ -22,7 +22,6 @@ class HollywoodGraph:
         self.nodes.update(self.actors)
 
 
-
     #Oppgave 1.2
     def printGraphSize(self):
         edges = 0
@@ -31,7 +30,7 @@ class HollywoodGraph:
             numActors = len(film.actors)
             edges += (numActors*(numActors - 1))/2
 
-        print(f"\nNodes: {len(self.actors)}\nEdges: {edges}")
+        print(f"\nNodes: {len(self.actors)}\nEdges: {int(edges)}")
 
 
     #Oppgave 2
@@ -104,7 +103,7 @@ class HollywoodGraph:
         goalActor = self.nodes[goalId]
 
         visited = set()
-        dist = {} #Length from node(key) to startActor.
+        dist = {} #Length from node/key to startActor.
         paths = {startActor: None} #Previous node with shortest path to startActor.
         queue = PriorityQueue()
         queue.put((0, startActor))
@@ -118,7 +117,7 @@ class HollywoodGraph:
         dist[startActor] = 0
 
         #Find distances from nodes to start
-        while not queue.empty() > 0:
+        while not queue.empty():
 
             node = queue.get()[1]
 
@@ -145,7 +144,7 @@ class HollywoodGraph:
             finalPath.insert(0, tmp)
             tmp = paths[tmp]
 
-        return (finalPath, dist[goalActor])
+        return (finalPath, dist[goalActor]/2) #The weight is doubble because we count movies as nodes.
 
 
     #Oppgave 4

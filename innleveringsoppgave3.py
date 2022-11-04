@@ -1,4 +1,3 @@
-from tracemalloc import start
 from HollywoodGraph import HollywoodGraph
 import time
 

@@ -8,7 +8,7 @@ class Actor:
     def __init__ (self, nmId: str, name: str):
         self.nmId = nmId
         self.name = name
-        self.movies = []
+        self.movies = set()
 
     #returns a dictionary of actors with nmId as key.
     def readFile(filename: str, movies: list):
@@ -24,8 +24,8 @@ class Actor:
             for ttId in line[2:]:
                 if ttId in movies:
                     movie = movies[ttId]
-                    newActor.movies.append(movie)
-                    movie.actors.append(newActor)
+                    newActor.movies.add(movie)
+                    movie.actors.add(newActor)
 
         file.close()
 
